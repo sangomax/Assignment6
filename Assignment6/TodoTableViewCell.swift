@@ -60,7 +60,7 @@ class TodoTableViewCell: UITableViewCell {
     }
     
     func update(with task: Task) {
-        
+        checkLabel.isHidden = task.noChecked
         taskNameLabel.text = task.name
         taskDescLabel.text = task.desc
     }

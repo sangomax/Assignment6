@@ -13,7 +13,11 @@ class TodoTableViewController: UITableViewController, AddEditEmojiTVCDelegate {
     
     let priorityHeader = ["High Priority", "Medium Priority", "Low Priority"]
     
-    var tasks : [[Task]] = [[],[],[]]
+    var tasks : [[Task]] = [[],[],[]] {
+        didSet {
+          Task.saveToFile(tasks: tasks)
+        }
+    }
     
     var cont: Int = 0
     
@@ -41,7 +45,13 @@ class TodoTableViewController: UITableViewController, AddEditEmojiTVCDelegate {
         let deleteButton = UIBarButtonItem(title: "Delete", style: .plain, target: self, action: #selector(deleteTask))
         navigationItem.setRightBarButtonItems([addButton, deleteButton], animated: true)
         
+        if let savedTasks = Task.loadFromFile() {
+          tasks = savedTasks
+        }
         
+        // path
+        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+        print("Document Path: ", documentsPath)
     }
     
     
@@ -113,13 +123,13 @@ class TodoTableViewController: UITableViewController, AddEditEmojiTVCDelegate {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let task = tasks[indexPath.section][indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! TodoTableViewCell
         
-        cell.checkLabel.isHidden = tasks[indexPath.section][indexPath.row].check
-        cell.taskNameLabel.text = tasks[indexPath.section][indexPath.row].name
-        cell.taskDescLabel.text = tasks[indexPath.section][indexPath.row].desc
         cell.editSymbolLabel.addTarget(self, action: #selector(editTast), for: .touchUpInside)
         
+        cell.update(with: task)
+        cell.showsReorderControl = true
         return cell
     }
     
@@ -135,7 +145,7 @@ class TodoTableViewController: UITableViewController, AddEditEmojiTVCDelegate {
         if tableView.isEditing {
             return
         }
-        tasks[indexPath.section][indexPath.row].check.toggle()
+        tasks[indexPath.section][indexPath.row].noChecked.toggle()
         tableView.reloadRows(at: [indexPath], with: .none)
     }
     
