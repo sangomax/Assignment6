@@ -11,6 +11,7 @@ class AddEditTextFieldTableViewCell: UITableViewCell {
     
     let textField: UITextField = {
         let tf = UITextField()
+        tf.font = UIFont(name: "ChalkboardSE-Light",size: 16)
         tf.borderStyle = .roundedRect
         return tf
     }()

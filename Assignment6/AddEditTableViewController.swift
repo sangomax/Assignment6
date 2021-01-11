@@ -120,5 +120,9 @@ class AddEditTableViewController: UITableViewController {
         return fields[section]
     }
     
-    
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.textColor = UIColor.black
+        header.textLabel?.font = UIFont(name: "ChalkboardSE-Regular",size: 14)
+    }
 }

@@ -13,6 +13,15 @@ class TodoTableViewController: UITableViewController, AddEditEmojiTVCDelegate {
     
     let priorityHeader = ["High Priority", "Medium Priority", "Low Priority"]
     
+    let colors = [UIColor.systemRed, UIColor.systemYellow, UIColor.systemGreen]
+    
+    let initialScreen : UIImageView = {
+        var s = UIImageView()
+        s.matchParent()
+        s.image = .init(imageLiteralResourceName: "info")
+        return s
+    } ()
+    
     var tasks : [[Task]] = [[],[],[]] {
         didSet {
           Task.saveToFile(tasks: tasks)
@@ -37,6 +46,7 @@ class TodoTableViewController: UITableViewController, AddEditEmojiTVCDelegate {
         tableView.allowsMultipleSelectionDuringEditing = true
         
         navigationItem.title = "Todo Items"
+        
         
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.leftBarButtonItem = editButtonItem
@@ -82,7 +92,7 @@ class TodoTableViewController: UITableViewController, AddEditEmojiTVCDelegate {
     
     @objc func deleteTask() {
         if let indexPath = tableView.indexPathsForSelectedRows {
-            print(indexPath)
+            
             for index in indexPath.reversed() {
                 tasks[index.section].remove(at: index.row)
                 tableView.deleteRows(at: [index], with: .automatic)
@@ -106,6 +116,7 @@ class TodoTableViewController: UITableViewController, AddEditEmojiTVCDelegate {
         
     }
     
+    
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -119,8 +130,11 @@ class TodoTableViewController: UITableViewController, AddEditEmojiTVCDelegate {
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        tableView.sectionIndexBackgroundColor = colors[section]
         return priorityHeader[section]
     }
+    
+    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let task = tasks[indexPath.section][indexPath.row]
@@ -149,4 +163,10 @@ class TodoTableViewController: UITableViewController, AddEditEmojiTVCDelegate {
         tableView.reloadRows(at: [indexPath], with: .none)
     }
     
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        view.tintColor = colors[section]
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.textColor = UIColor.white
+        header.textLabel?.font = UIFont(name: "ChalkboardSE-Bold",size: 20)
+    }
 }

@@ -12,18 +12,20 @@ class TodoTableViewCell: UITableViewCell {
     let checkLabel: UILabel = {
         let lb = UILabel()
         lb.text = "✓"
+        lb.font = UIFont(name: "ChalkboardSE-Bold",size: 30)
         lb.setContentHuggingPriority(.required, for: .horizontal)
         return lb
     }()
     
     let taskNameLabel: UILabel = {
         let lb = UILabel()
-        lb.font = .boldSystemFont(ofSize: 20)
+        lb.font = UIFont(name: "ChalkboardSE-Regular",size: 20)
         return lb
     }()
     
     let taskDescLabel: UILabel =  {
         let lb = UILabel()
+        lb.font = UIFont(name: "ChalkboardSE-Light",size: 16)
         lb.numberOfLines = 0
         return lb
     }()
@@ -31,6 +33,7 @@ class TodoTableViewCell: UITableViewCell {
     let editSymbolLabel: UIButton = {
         let bt  = UIButton(type: .custom)
         bt.setTitle("ℹ︎",for: .normal)
+        bt.titleLabel?.font = UIFont(name: "ChalkboardSE-Regular",size: 30)
         bt.setTitleColor(.systemBlue, for: .normal)
         bt.setContentHuggingPriority(.required, for: .horizontal)
         return bt
